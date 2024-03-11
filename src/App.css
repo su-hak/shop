@@ -55,3 +55,22 @@
 .col-md-3 img {
   width: 100%;
 }
+
+.coupon {
+  border: 1px solid;
+  width: 150px;
+  margin: 0 auto;
+}
+
+.coupon dt {
+  border-bottom: 1px solid;
+}
+
+.start {
+  opacity: 0;
+}
+
+.end {
+  opacity: 1;
+  transition: opacity 2s;
+}
