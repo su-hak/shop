@@ -24,10 +24,10 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy" : "npm run build",
-    "deploy" : "gh-pages -d build"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
-  "homepage" : "http://su-hak.github.io/shop/",
+  "homepage": "https://su-hak.github.io/shop/",
   "eslintConfig": {
     "extends": [
       "react-app",

@@ -7,16 +7,26 @@ import ex from './data.js';
 import data from "./data.js";
 import {useState} from "react";
 import React from "react";
-import {Link, Outlet, Route, Routes, useNavigate} from "react-router-dom";
+import {Link, Outlet, HashRouter as Router, Route, Routes, useNavigate} from "react-router-dom";
 import Detail from "./routes/detail";
 import Cart from "./routes/Cart";
 import axios from "axios";
+import videoSrc from './Saint_Laurent_mainVideo.mp4'
 
 function App() {
 
     let [items] = useState(data);
     let navigate = useNavigate();
     let [stock, setStock] = useState([7, 8, 9]);
+
+    // items 데이터 섹션별로 그룹화
+    const groupedData = items.reduce((acc, item) => {
+        if (!acc[item.section]) {
+            acc[item.section] = [];
+        }
+        acc[item.section].push(item);
+        return acc;
+    }, {});
 
 
 /*    // post 요청
@@ -82,34 +92,48 @@ function App() {
                 </Container>
             </Navbar>
 
-
             <Routes>
                 <Route path="*" element={<div>404 페이지</div>}/>
                 <Route path="/" element={
                     <>
-                        <div className="main-bg"></div>
+                        <div className="main-bg">
+                            <div className="hero -full">
+                                <video autoPlay muted loop className="main-video">
+                                    <source src={videoSrc} type="video/mp4"/>
+                                </video>
+                                <div className="title">
+                                    <h1 className="bold">SUMMER 24</h1>
+                                </div>
+                            </div>
+
+                        </div>
                         <div className="container">
-                            <div className="row">
-                                {/*
+                            {/*
                     1. 상품 목록을 컴포넌트화 하기
                     2. 컴포넌트 > 데이터 바인딩
                     3. 3개 상품 map으로 반복
                     */}
-
-                                {
-                                    items.map((item, index) => {
-                                        return (
-                                            <Card item={item} index={index + 1}></Card>
-                                        )
-                                    })
-                                }
+                            {Object.keys(groupedData).map(section => (
+                                <div key={section} className="section">
+                            <div className="row">
+                                {groupedData[section].map((item) => (
+                                    <Card
+                                        key={item.id}
+                                        section={item.section}
+                                        id={item.id}
+                                        item={item}
+                                    >
+                                    </Card>
+                                    ))}
                             </div>
                         </div>
+                            ))}
+                        </div>
                     </>
-                }/>
+                }></Route>
 
                 <Route path="/detail/:id" element={
-                    <Context1.Provider value = {{stock, items}}>
+                    <Context1.Provider value={{stock, items}}>
                         <Detail/>
                     </Context1.Provider>}/>
                 <Route path="/cart" element={<Cart/>}/>
@@ -121,13 +145,11 @@ function App() {
                     <Route path="one" element={<Birth_Coupon/>}/>
                     <Route path="two" element={<First_Order/>}/>
                 </Route>
-                {/*
-                    1. /event/one 페이지 접속 시 생일 축하 쿠폰 이벤트 표시
-                    2. /event/two 페이지 접속 시 첫 주문 배송비 무료 이벤트 표시
 
-                */}
+                    {/*1. /event/one 페이지 접속 시 생일 축하 쿠폰 이벤트 표시
+                    2. /event/two 페이지 접속 시 첫 주문 배송비 무료 이벤트 표시*/}
+
             </Routes>
-
             <button onClick={() => {
                 axios.get("https://korea-webtoon-api.herokuapp.com/search?keyword=갓오브하이스쿨")
                     .then((data) => {
@@ -199,15 +221,19 @@ function First_Order() {
     )
 }
 
-function Card(props) {
-    console.log(props.item.title);
+function Card({ item, section, id }) { // props을 item, section, id로 받기
+    console.log(item.title);
     return (
         <div className="col-md-3">
             <div className="image-box">
-            <img className="image-thumbnail" src={process.env.PUBLIC_URL+'/item'+(props.index)+ '.jpg'}></img>
+            <img className="image-thumbnail"
+                 src={`${process.env.PUBLIC_URL}/img/sec${section}_img${id+1}.jpg`}
+                 alt={item.title}>
+            </img>
             </div>
-
-            <h6>{props.item.title}</h6>
+            {/*<h6>{item.title}</h6>
+            <p>{item.content}</p>
+            <p>{item.price.toLocaleString()} 원</p>*/}
         </div>
     )
 }
