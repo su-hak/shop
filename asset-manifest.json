@@ -1,17 +1,18 @@
 {
   "files": {
-    "main.css": "/shop/static/css/main.36e78157.css",
+    "main.css": "/shop/static/css/main.c1b81bf8.css",
     "main.js": "/shop/static/js/main.6a810b38.js",
     "static/js/453.0f4552a2.chunk.js": "/shop/static/js/453.0f4552a2.chunk.js",
+    "static/media/Saint Laurent-mainVideo.mp4": "/shop/static/media/Saint Laurent-mainVideo.95d69015cef79c6b9fb3.mp4",
     "static/media/bg_main.avif": "/shop/static/media/bg_main.c046b8c6cea7b47dc22a.avif",
     "static/media/logo.svg": "/shop/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/shop/index.html",
-    "main.36e78157.css.map": "/shop/static/css/main.36e78157.css.map",
+    "main.c1b81bf8.css.map": "/shop/static/css/main.c1b81bf8.css.map",
     "main.6a810b38.js.map": "/shop/static/js/main.6a810b38.js.map",
     "453.0f4552a2.chunk.js.map": "/shop/static/js/453.0f4552a2.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.36e78157.css",
+    "static/css/main.c1b81bf8.css",
     "static/js/main.6a810b38.js"
   ]
 }
