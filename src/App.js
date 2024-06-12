@@ -12,6 +12,9 @@ import Detail from "./routes/detail";
 import Cart from "./routes/Cart";
 import axios from "axios";
 import videoSrc from './Saint_Laurent_mainVideo.mp4'
+import Header from "./routes/Header";
+import Footer from "./routes/Footer";
+import FooterScript from "./routes/FooterScript";
 
 function App() {
 
@@ -59,39 +62,7 @@ function App() {
 
     return (
         <div className="App">
-            <Navbar expand="lg" className="bg-body-tertiary">
-                <Container>
-                    <Navbar.Brand href="#home" className="main-title">SAINT LAURENT</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav"/>
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="me-auto">
-                            <Nav.Link href="#home">여성 쇼핑</Nav.Link>
-                            <Nav.Link href="#link">남성 쇼핑</Nav.Link>
-                            <NavDropdown title="카테고리" id="basic-nav-dropdown">
-                                <NavDropdown.Item href="#action/3.1">컬렉션</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.2">
-                                    LA MAISON
-                                </NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.3">CAI GUO-QIANG</NavDropdown.Item>
-                                <NavDropdown.Divider/>
-                                <NavDropdown.Item href="#action/3.4">
-                                    SAINT LAURENT SELF
-                                </NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.4">
-                                    SAINT LAURENT
-                                </NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.4">
-                                    PRODUCTIONS
-                                </NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.4">
-                                    매장 위치 찾기
-                                </NavDropdown.Item>
-                            </NavDropdown>
-                        </Nav>
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar>
-
+            <Header/>
             <Routes>
                 <Route path="*" element={<div>404 페이지</div>}/>
                 <Route path="/" element={
@@ -150,6 +121,9 @@ function App() {
                     2. /event/two 페이지 접속 시 첫 주문 배송비 무료 이벤트 표시*/}
 
             </Routes>
+            <Footer/>
+            <FooterScript/>
+
             <button onClick={() => {
                 axios.get("https://korea-webtoon-api.herokuapp.com/search?keyword=갓오브하이스쿨")
                     .then((data) => {
@@ -224,9 +198,9 @@ function First_Order() {
 function Card({ item, section, id }) { // props을 item, section, id로 받기
     console.log(item.title);
     return (
-        <div className="col-md-3">
+        <div className={item.alt}>
             <div className="image-box">
-            <img className="image-thumbnail"
+            <img className={item.alt}
                  src={`${process.env.PUBLIC_URL}/img/sec${section}_img${id+1}.jpg`}
                  alt={item.title}>
             </img>
