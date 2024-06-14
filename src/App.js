@@ -124,7 +124,7 @@ function App() {
             <Footer/>
             <FooterScript/>
 
-            <button onClick={() => {
+            {/*<button onClick={() => {
                 axios.get("https://korea-webtoon-api.herokuapp.com/search?keyword=갓오브하이스쿨")
                     .then((data) => {
                         console.log(data); // 요청 성공시
@@ -137,7 +137,7 @@ function App() {
                     // 요청 성공여부에 상관없이 항상 실행 할 코드
                 })
             }}>ajax 요청
-            </button>
+            </button>*/}
         </div>
     );
 }

@@ -7,7 +7,7 @@ function Footer() {
 
             <footer className="footer" data-container="footer" data-context="FOOTER" role="contentinfo">
                 <div>
-                    <div className="c-backtotop" data-component="backToTop">
+                    <div className="c-backtotop" data-component="backToTop" style={{display:"none"}}>
                         <div className="c-backtotop__content">
                             <button className="c-backtotop__iconlink" data-action="toTop">
             <span className="c-backtotop__text">
