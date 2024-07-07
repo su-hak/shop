@@ -1,37 +1,35 @@
-import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button, Container, Nav, Navbar, NavDropdown} from 'react-bootstrap';
-import bg from './bg_main.avif'
-import ex from './data.js';
-import data from "./data.js";
 import {useState} from "react";
 import React from "react";
-import {Link, Outlet, HashRouter as Router, Route, Routes, useNavigate} from "react-router-dom";
+import {Link, Outlet, HashRouter as Router, Route, Routes, useNavigate, BrowserRouter} from "react-router-dom";
 import Detail from "./routes/detail";
 import Cart from "./routes/Cart";
 import axios from "axios";
-import videoSrc from './Saint_Laurent_mainVideo.mp4'
 import Header from "./routes/Header";
 import Footer from "./routes/Footer";
 import FooterScript from "./routes/FooterScript";
+import ProductAll from './page/ProductAll.js';
+import Login from './page/Login.js';
+import ProductDetail from './page/ProductDetail.js';
+
+
+// 1. 전체 상품 페이지, 로그인, 상품 상세 페이지
+// 1-1. 네비게이션 바
+// 2. 전체 상품 페이지에서는 전체 상품을 볼 수 있다.
+// 3. 로그인 버튼을 누르면 로그인 페이지가 나온다.
+// 4. 상품 디테일을 눌렀으나, 로그인이 안 되어있을 경우에는 로그인 페이지가 먼저 나온다..
+// 5. 로그인이 되어있을 경우엔 상품 디테일 페이지를 볼 수 있다.
+// 6. 로그아웃 버튼을 클릭하면 로그아웃이 된다.
+// 7. 로그 아웃이 되면 상품 디테일 페이지를 볼 수 없다, 다시 로그인 페이지가 보인다.
+// 8. 로그인을 하면 로그아웃이 보이고 로그아웃을 하면 로그인이 보인다.
+// 9. 상품을 검색할 수 있다.
 
 function App() {
 
-    let [items] = useState(data);
     let navigate = useNavigate();
     let [stock, setStock] = useState([7, 8, 9]);
-
-    // items 데이터 섹션별로 그룹화
-    const groupedData = items.reduce((acc, item) => {
-        if (!acc[item.section]) {
-            acc[item.section] = [];
-        }
-        acc[item.section].push(item);
-        return acc;
-    }, {});
-
-
 /*    // post 요청
     axios.post('요청 할 URL', {name: 'kim'})
 
@@ -64,49 +62,11 @@ function App() {
         <div className="App">
             <Header/>
             <Routes>
+                <Route path='/' element={<ProductAll/>}/>
+                <Route path='login' element={<Login/>}/>
+                <Route path='detail' element={<ProductDetail/>}/>
                 <Route path="*" element={<div>404 페이지</div>}/>
-                <Route path="/" element={
-                    <>
-                        <div className="main-bg">
-                            <div className="hero -full">
-                                <video autoPlay muted loop className="main-video">
-                                    <source src={videoSrc} type="video/mp4"/>
-                                </video>
-                                <div className="title">
-                                    <h1 className="bold">SUMMER 24</h1>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div className="container">
-                            {/*
-                    1. 상품 목록을 컴포넌트화 하기
-                    2. 컴포넌트 > 데이터 바인딩
-                    3. 3개 상품 map으로 반복
-                    */}
-                            {Object.keys(groupedData).map(section => (
-                                <div key={section} className="section">
-                            <div className="row">
-                                {groupedData[section].map((item) => (
-                                    <Card
-                                        key={item.id}
-                                        section={item.section}
-                                        id={item.id}
-                                        item={item}
-                                    >
-                                    </Card>
-                                    ))}
-                            </div>
-                        </div>
-                            ))}
-                        </div>
-                    </>
-                }></Route>
-
-                <Route path="/detail/:id" element={
-                    <Context1.Provider value={{stock, items}}>
-                        <Detail/>
-                    </Context1.Provider>}/>
+                
                 <Route path="/cart" element={<Cart/>}/>
                 <Route path="/about" element={<About/>}>
                     <Route path="member" element={<div>경영진 소개</div>}/>
@@ -195,22 +155,7 @@ function First_Order() {
     )
 }
 
-function Card({ item, section, id }) { // props을 item, section, id로 받기
-    console.log(item.title);
-    return (
-        <div className={item.alt}>
-            <div className="image-box">
-            <img className={item.alt}
-                 src={`${process.env.PUBLIC_URL}/img/sec${section}_img${id+1}.jpg`}
-                 alt={item.title}>
-            </img>
-            </div>
-            {/*<h6>{item.title}</h6>
-            <p>{item.content}</p>
-            <p>{item.price.toLocaleString()} 원</p>*/}
-        </div>
-    )
-}
+
 
 class Detail2 extends React.Component {
     componentDidMount() {
