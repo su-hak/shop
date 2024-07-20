@@ -1,18 +1,22 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Button, Container, Nav, Navbar, NavDropdown} from 'react-bootstrap';
-import {useState} from "react";
+import { Button, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { useEffect, useState } from "react";
 import React from "react";
-import {Link, Outlet, HashRouter as Router, Route, Routes, useNavigate, BrowserRouter} from "react-router-dom";
+import { Link, Outlet, BrowserRouter as Router, Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import Detail from "./routes/detail";
-import Cart from "./routes/Cart";
-import axios from "axios";
 import Header from "./routes/Header";
 import Footer from "./routes/Footer";
 import FooterScript from "./routes/FooterScript";
 import ProductAll from './page/ProductAll.js';
 import Login from './page/Login.js';
+import Viewed from './routes/Viewed.js';
+import Cart from "./routes/Cart";
 import ProductDetail from './page/ProductDetail.js';
+import Pay from './page/Pay.js';
+import PrivateRoute from './routes/PrivateRoute.js';
+import Join from './page/Join.js';
+
 
 
 // 1. 전체 상품 페이지, 로그인, 상품 상세 페이지
@@ -27,77 +31,47 @@ import ProductDetail from './page/ProductDetail.js';
 // 9. 상품을 검색할 수 있다.
 
 function App() {
+    const [authenticate, setAuthenticate] = useState(false); // true=로그인 성공, false=로그인 실패
+    const [isScrolledPast, setIsScrolledPast] = useState(false);
+    const [isHome, setIsHome] = useState(false);
+    const location = useLocation();
 
-    let navigate = useNavigate();
-    let [stock, setStock] = useState([7, 8, 9]);
-/*    // post 요청
-    axios.post('요청 할 URL', {name: 'kim'})
+    useEffect(()=>{
+        console.log("aaaa", authenticate)
+    }, [authenticate])
 
-    //
-    let param = {id: 0, pass: "1231sd"}
-
-    async function getAPI() {
-        try {
-
-        } catch (e) {
-
+    useEffect(() => {
+        if (location.pathname !== "/") {
+            setIsHome(false);
+            setIsScrolledPast(false);
         }
-    }*/
-/*    axios({
-        method: "get",
-        url: "url",
-        responseType: "type",
-        data: JSON.stringify(param)
-    }).then(function (res) {
-
-    }).catch(function () {
-
-    });
-
-    // 동시에 여러 Ajax 요청 날리기
-    Promise.all([axios.get('URL1'), axios.get('URL2')])
-        .then()*/
+    }, [location.pathname]);
 
     return (
         <div className="App">
-            <Header/>
-            <Routes>
-                <Route path='/' element={<ProductAll/>}/>
-                <Route path='login' element={<Login/>}/>
-                <Route path='detail' element={<ProductDetail/>}/>
-                <Route path="*" element={<div>404 페이지</div>}/>
-                
-                <Route path="/cart" element={<Cart/>}/>
-                <Route path="/about" element={<About/>}>
-                    <Route path="member" element={<div>경영진 소개</div>}/>
-                    <Route path="loc" element={<div>오시는길</div>}/>
-                </Route>
-                <Route path="/event" element={<Event/>}>
-                    <Route path="one" element={<Birth_Coupon/>}/>
-                    <Route path="two" element={<First_Order/>}/>
-                </Route>
+            <Header isScrolledPast={isScrolledPast} isHome={isHome}/>
+                <Routes>
+                    <Route path="/" element={<ProductAll setIsScrolledPast={setIsScrolledPast} setIsHome={setIsHome}/>} />
+                    <Route path='/products/:id' element={<ProductDetail />} />
+                    <Route path="*" element={<div>404 페이지</div>} />
 
-                    {/*1. /event/one 페이지 접속 시 생일 축하 쿠폰 이벤트 표시
-                    2. /event/two 페이지 접속 시 첫 주문 배송비 무료 이벤트 표시*/}
+                    <Route path="/login" element={<Login setAuthenticate={setAuthenticate}/>} />
+                    <Route path="/join" element={<Join />} />
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/viewed" element={<Viewed />} />
+                    <Route path="/pay" element={<PrivateRoute authenticate={authenticate}/>} />
 
-            </Routes>
-            <Footer/>
-            <FooterScript/>
-
-            {/*<button onClick={() => {
-                axios.get("https://korea-webtoon-api.herokuapp.com/search?keyword=갓오브하이스쿨")
-                    .then((data) => {
-                        console.log(data); // 요청 성공시
-                        let copy = {...items, ...data.data.webtoons}
-                        // copy = [ 기존 array, 가져온 data ]
-                        // [{}, {}, {}, {}, {}, {}]
-                    }).catch(() => {
-                    console.log("axios 요청 실패"); // 요청 실패시
-                }).finally(() => {
-                    // 요청 성공여부에 상관없이 항상 실행 할 코드
-                })
-            }}>ajax 요청
-            </button>*/}
+                    <Route path="/about" element={<About />}>
+                        <Route path="member" element={<div>경영진 소개</div>} />
+                        <Route path="loc" element={<div>오시는길</div>} />
+                    </Route>
+                    <Route path="/event" element={<Event />}>
+                        <Route path="one" element={<Birth_Coupon />} />
+                        <Route path="two" element={<First_Order />} />
+                    </Route>
+                </Routes>
+            <Footer />
+            <FooterScript />
         </div>
     );
 }
@@ -115,10 +89,10 @@ function About() {
 function Event() {
     return (
         <div>
-            <h1>Event !!!</h1><br/>
+            <h1>Event !!!</h1><br />
             <Outlet>
-            </Outlet><br/>
-            <Button path="/event/one">생일 쿠폰</Button><br/><br/>
+            </Outlet><br />
+            <Button path="/event/one">생일 쿠폰</Button><br /><br />
             <Button path="/event/two">첫 주문 할인 쿠폰</Button>
         </div>
     )
@@ -142,7 +116,7 @@ function Birth_Coupon() {
 function First_Order() {
     return (
         <div>
-        <h3>첫 주문 감사 할인</h3>
+            <h3>첫 주문 감사 할인</h3>
             <Outlet>
             </Outlet>
 
